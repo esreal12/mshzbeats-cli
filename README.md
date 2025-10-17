@@ -33,7 +33,7 @@ mshzbeats 140 --signature 3/4 --swing 60
 
 ### 🧩 Secciones de salida
 
-- **Figuras rectas**: redonda, blanca, negra, corchea, semicorchea, 1/32, 1/64
+- **Figuras rectas**: 1/1, 1/2, 1/4, 1/8, 1/16, 1/32, 1/64
 - **Con puntillo**: todas las figuras con factor ×1.5
 - **En tresillo**: todas las figuras con factor ×(2/3)
 - **Swing en corcheas**: comparación entre recto (50%) y swing personalizado
@@ -62,11 +62,11 @@ sudo mv mshzbeats.py /usr/local/bin/mshzbeats
 [Figuras rectas]
 Figura        ms       Hz(rate)   muestras
 -------------------------------------------
-redonda       1846.15  0.542      88523
-blanca        923.08   1.083      44261
-negra         461.54   2.168      22154
-corchea       230.77   4.333      11077
-semicorchea   115.38   8.667      5538
+1/1           1846.15  0.542      88523
+1/2           923.08   1.083      44261
+1/4           461.54   2.168      22154
+1/8           230.77   4.333      11077
+1/16          115.38   8.667      5538
 1/32          57.692   17.333     2769
 1/64          28.846   34.667     1384
 
@@ -108,7 +108,7 @@ mshzbeats 140 --signature 3/4 --swing 60
 
 ### 🧩 Output sections
 
-- **Straight figures**: whole, half, quarter, eighth, sixteenth, 32nd, 64th notes
+- **Straight figures**: 1/1, 1/2, 1/4, 1/8, 1/16, 1/32, 1/64 notes
 - **Dotted**: all figures with ×1.5 factor
 - **Triplets**: all figures with ×(2/3) factor
 - **Swing on eighths**: comparison between straight (50%) and custom swing
@@ -137,11 +137,11 @@ sudo mv mshzbeats.py /usr/local/bin/mshzbeats
 [Figuras rectas]
 Figura        ms       Hz(rate)   muestras
 -------------------------------------------
-redonda       1846.15  0.542      88523
-blanca        923.08   1.083      44261
-negra         461.54   2.168      22154
-corchea       230.77   4.333      11077
-semicorchea   115.38   8.667      5538
+1/1           1846.15  0.542      88523
+1/2           923.08   1.083      44261
+1/4           461.54   2.168      22154
+1/8           230.77   4.333      11077
+1/16          115.38   8.667      5538
 1/32          57.692   17.333     2769
 1/64          28.846   34.667     1384
 
