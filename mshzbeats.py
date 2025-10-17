@@ -10,6 +10,19 @@ import argparse
 import sys
 import math
 
+# Color codes for terminal output
+class Colors:
+    PURPLE = '\033[95m'      # Magenta/Purple
+    GREEN = '\033[92m'       # Green
+    CYAN = '\033[96m'        # Cyan
+    YELLOW = '\033[93m'      # Yellow
+    RED = '\033[91m'         # Red
+    BOLD = '\033[1m'         # Bold
+    UNDERLINE = '\033[4m'    # Underline
+    END = '\033[0m'          # End color
+    BRIGHT_GREEN = '\033[92m'  # Bright Green
+    BRIGHT_PURPLE = '\033[95m' # Bright Purple
+
 def format_number(value, is_ms=True):
     """Format numbers with appropriate decimal places"""
     if is_ms and value < 100:
@@ -103,42 +116,47 @@ def calculate_swing_values(quarter_note_ms, swing_percent):
     }
 
 def print_header(bpm, sample_rate, signature, swing):
-    """Print the main header"""
+    """Print the main header with colors"""
     width = 80
     title = f"mshzbeats • BPM={bpm} • SR={sample_rate} • Compás {signature}"
     if swing != 50:
         title += f" • Swing {swing}%"
     
-    print("─" * width)
-    print(f"{title:^{width}}")
-    print("─" * width)
+    print(f"{Colors.PURPLE}{'─' * width}{Colors.END}")
+    print(f"{Colors.BOLD}{Colors.BRIGHT_PURPLE}{title:^{width}}{Colors.END}")
+    print(f"{Colors.PURPLE}{'─' * width}{Colors.END}")
 
 def print_section(title, values, sample_rate):
-    """Print a section with musical values"""
-    print(f"\n[{title}]")
+    """Print a section with musical values and colors"""
+    print(f"\n{Colors.BOLD}{Colors.GREEN}[{title}]{Colors.END}")
     
     # Add special subtitle for straight figures
     if title == "Figuras rectas":
-        print("──────────────── Divisiones estándar (analógicas / DAW) ────────────────")
+        print(f"{Colors.CYAN}──────────────── Divisiones estándar (analógicas / DAW) ────────────────{Colors.END}")
     
-    print(f"{'Figura':<15} {'ms':<10} {'Hz(rate)':<10} {'muestras':<10}")
-    print("─" * 50)
+    # Header row with colors
+    print(f"{Colors.BOLD}{Colors.YELLOW}{'Figura':<15} {'ms':<10} {'Hz(rate)':<10} {'muestras':<10}{Colors.END}")
+    print(f"{Colors.GREEN}{'─' * 50}{Colors.END}")
     
     for note_name, data in values.items():
         ms_str = format_number(data['ms'])
         hz_str = format_number(data['hz'], False)
-        print(f"{note_name:<15} {ms_str:<10} {hz_str:<10} {data['samples']:<10}")
+        # Alternate row colors
+        if list(values.keys()).index(note_name) % 2 == 0:
+            print(f"{Colors.BRIGHT_GREEN}{note_name:<15} {ms_str:<10} {hz_str:<10} {data['samples']:<10}{Colors.END}")
+        else:
+            print(f"{Colors.CYAN}{note_name:<15} {ms_str:<10} {hz_str:<10} {data['samples']:<10}{Colors.END}")
 
 def print_swing_section(swing_data, sample_rate):
-    """Print swing section"""
-    print(f"\n[Swing en corcheas - {swing_data['swing_percent']}%]")
-    print(f"{'Tipo':<20} {'ms':<10} {'Hz(rate)':<10} {'muestras':<10}")
-    print("─" * 55)
+    """Print swing section with colors"""
+    print(f"\n{Colors.BOLD}{Colors.GREEN}[Swing en corcheas - {swing_data['swing_percent']}%]{Colors.END}")
+    print(f"{Colors.BOLD}{Colors.YELLOW}{'Tipo':<20} {'ms':<10} {'Hz(rate)':<10} {'muestras':<10}{Colors.END}")
+    print(f"{Colors.GREEN}{'─' * 55}{Colors.END}")
     
     # Straight reference
     straight_hz = 1000 / swing_data['straight']
     straight_samples = int(swing_data['straight'] * sample_rate / 1000)
-    print(f"{'Recto (50%)':<20} {format_number(swing_data['straight']):<10} {format_number(straight_hz, False):<10} {straight_samples:<10}")
+    print(f"{Colors.BRIGHT_GREEN}{'Recto (50%)':<20} {format_number(swing_data['straight']):<10} {format_number(straight_hz, False):<10} {straight_samples:<10}{Colors.END}")
     
     # Swing values
     first_hz = 1000 / swing_data['first_note']
@@ -146,14 +164,14 @@ def print_swing_section(swing_data, sample_rate):
     second_hz = 1000 / swing_data['second_note']
     second_samples = int(swing_data['second_note'] * sample_rate / 1000)
     
-    print(f"{'Corchea larga':<20} {format_number(swing_data['first_note']):<10} {format_number(first_hz, False):<10} {first_samples:<10}")
-    print(f"{'Corchea corta':<20} {format_number(swing_data['second_note']):<10} {format_number(second_hz, False):<10} {second_samples:<10}")
+    print(f"{Colors.CYAN}{'Corchea larga':<20} {format_number(swing_data['first_note']):<10} {format_number(first_hz, False):<10} {first_samples:<10}{Colors.END}")
+    print(f"{Colors.BRIGHT_GREEN}{'Corchea corta':<20} {format_number(swing_data['second_note']):<10} {format_number(second_hz, False):<10} {second_samples:<10}{Colors.END}")
 
 def print_delay_presets(base_values, sample_rate):
-    """Print delay presets"""
-    print(f"\n[Atajos útiles - Delays]")
-    print(f"{'Preset':<20} {'ms':<10} {'Hz(rate)':<10} {'muestras':<10}")
-    print("─" * 55)
+    """Print delay presets with colors"""
+    print(f"\n{Colors.BOLD}{Colors.GREEN}[Atajos útiles - Delays]{Colors.END}")
+    print(f"{Colors.BOLD}{Colors.YELLOW}{'Preset':<20} {'ms':<10} {'Hz(rate)':<10} {'muestras':<10}{Colors.END}")
+    print(f"{Colors.GREEN}{'─' * 55}{Colors.END}")
     
     presets = {
         'Delay slap (1/32)': base_values['1/32'],
@@ -168,28 +186,34 @@ def print_delay_presets(base_values, sample_rate):
         'Dub largo (1/2)': base_values['1/2']
     }
     
-    for preset_name, data in presets.items():
+    for i, (preset_name, data) in enumerate(presets.items()):
         ms_str = format_number(data['ms'])
         hz_str = format_number(data['hz'], False)
-        print(f"{preset_name:<20} {ms_str:<10} {hz_str:<10} {data['samples']:<10}")
+        if i % 2 == 0:
+            print(f"{Colors.BRIGHT_GREEN}{preset_name:<20} {ms_str:<10} {hz_str:<10} {data['samples']:<10}{Colors.END}")
+        else:
+            print(f"{Colors.CYAN}{preset_name:<20} {ms_str:<10} {hz_str:<10} {data['samples']:<10}{Colors.END}")
 
 def print_predelays(sample_rate):
-    """Print predelay/gate values"""
-    print(f"\n[Predelays / Gates]")
-    print(f"{'Tiempo':<15} {'ms':<10} {'Hz(rate)':<10} {'muestras':<10}")
-    print("─" * 50)
+    """Print predelay/gate values with colors"""
+    print(f"\n{Colors.BOLD}{Colors.GREEN}[Predelays / Gates]{Colors.END}")
+    print(f"{Colors.BOLD}{Colors.YELLOW}{'Tiempo':<15} {'ms':<10} {'Hz(rate)':<10} {'muestras':<10}{Colors.END}")
+    print(f"{Colors.GREEN}{'─' * 50}{Colors.END}")
     
     predelays = [10, 20, 30, 40, 60, 90, 120]
-    for ms in predelays:
+    for i, ms in enumerate(predelays):
         hz = 1000 / ms
         samples = int(ms * sample_rate / 1000)
-        print(f"{ms} ms{'':<8} {format_number(ms):<10} {format_number(hz, False):<10} {samples:<10}")
+        if i % 2 == 0:
+            print(f"{Colors.BRIGHT_GREEN}{ms} ms{'':<8} {format_number(ms):<10} {format_number(hz, False):<10} {samples:<10}{Colors.END}")
+        else:
+            print(f"{Colors.CYAN}{ms} ms{'':<8} {format_number(ms):<10} {format_number(hz, False):<10} {samples:<10}{Colors.END}")
 
 def print_compression_guide(base_values, sample_rate):
-    """Print compression tempo-sync guide"""
-    print(f"\n[Compresión tempo-sync]")
-    print(f"{'Parámetro':<25} {'ms':<10} {'Hz(rate)':<10} {'muestras':<10}")
-    print("─" * 60)
+    """Print compression tempo-sync guide with colors"""
+    print(f"\n{Colors.BOLD}{Colors.GREEN}[Compresión tempo-sync]{Colors.END}")
+    print(f"{Colors.BOLD}{Colors.YELLOW}{'Parámetro':<25} {'ms':<10} {'Hz(rate)':<10} {'muestras':<10}{Colors.END}")
+    print(f"{Colors.GREEN}{'─' * 60}{Colors.END}")
     
     compression = {
         'Ataque rápido (~1/64)': base_values['1/64'],
@@ -198,17 +222,20 @@ def print_compression_guide(base_values, sample_rate):
         'Release musical (~1/4)': base_values['1/4']
     }
     
-    for param_name, data in compression.items():
+    for i, (param_name, data) in enumerate(compression.items()):
         ms_str = format_number(data['ms'])
         hz_str = format_number(data['hz'], False)
-        print(f"{param_name:<25} {ms_str:<10} {hz_str:<10} {data['samples']:<10}")
+        if i % 2 == 0:
+            print(f"{Colors.BRIGHT_GREEN}{param_name:<25} {ms_str:<10} {hz_str:<10} {data['samples']:<10}{Colors.END}")
+        else:
+            print(f"{Colors.CYAN}{param_name:<25} {ms_str:<10} {hz_str:<10} {data['samples']:<10}{Colors.END}")
 
 def print_esreal_blocks(base_values, sample_rate):
-    """Print Esreal Template modulation blocks"""
+    """Print Esreal Template modulation blocks with colors"""
     # Squelch block
-    print(f"\n[Bloque Esreal Squelch]")
-    print(f"{'Parámetro':<25} {'ms':<10} {'Hz(rate)':<10} {'muestras':<10}")
-    print("─" * 60)
+    print(f"\n{Colors.BOLD}{Colors.PURPLE}[Bloque Esreal Squelch]{Colors.END}")
+    print(f"{Colors.BOLD}{Colors.YELLOW}{'Parámetro':<25} {'ms':<10} {'Hz(rate)':<10} {'muestras':<10}{Colors.END}")
+    print(f"{Colors.PURPLE}{'─' * 60}{Colors.END}")
     
     squelch = {
         'LFO Rate 1 (1/8)': base_values['1/8'],
@@ -221,15 +248,18 @@ def print_esreal_blocks(base_values, sample_rate):
         'FM Sweep (1/4)': base_values['1/4']
     }
     
-    for param_name, data in squelch.items():
+    for i, (param_name, data) in enumerate(squelch.items()):
         ms_str = format_number(data['ms'])
         hz_str = format_number(data['hz'], False)
-        print(f"{param_name:<25} {ms_str:<10} {hz_str:<10} {data['samples']:<10}")
+        if i % 2 == 0:
+            print(f"{Colors.BRIGHT_GREEN}{param_name:<25} {ms_str:<10} {hz_str:<10} {data['samples']:<10}{Colors.END}")
+        else:
+            print(f"{Colors.CYAN}{param_name:<25} {ms_str:<10} {hz_str:<10} {data['samples']:<10}{Colors.END}")
     
     # Atmos block
-    print(f"\n[Bloque Esreal Atmos]")
-    print(f"{'Parámetro':<25} {'ms':<10} {'Hz(rate)':<10} {'muestras':<10}")
-    print("─" * 60)
+    print(f"\n{Colors.BOLD}{Colors.PURPLE}[Bloque Esreal Atmos]{Colors.END}")
+    print(f"{Colors.BOLD}{Colors.YELLOW}{'Parámetro':<25} {'ms':<10} {'Hz(rate)':<10} {'muestras':<10}{Colors.END}")
+    print(f"{Colors.PURPLE}{'─' * 60}{Colors.END}")
     
     # Calculate 1/8T (eighth note triplet)
     eighth_triplet = {
@@ -252,21 +282,24 @@ def print_esreal_blocks(base_values, sample_rate):
         'Pan Motion (2B)': two_bars
     }
     
-    for param_name, data in atmos.items():
+    for i, (param_name, data) in enumerate(atmos.items()):
         ms_str = format_number(data['ms'])
         hz_str = format_number(data['hz'], False)
-        print(f"{param_name:<25} {ms_str:<10} {hz_str:<10} {data['samples']:<10}")
+        if i % 2 == 0:
+            print(f"{Colors.BRIGHT_GREEN}{param_name:<25} {ms_str:<10} {hz_str:<10} {data['samples']:<10}{Colors.END}")
+        else:
+            print(f"{Colors.CYAN}{param_name:<25} {ms_str:<10} {hz_str:<10} {data['samples']:<10}{Colors.END}")
 
 def print_summary(quarter_note_ms, bpm, signature):
-    """Print final summary"""
-    print(f"\n{'─' * 50} Resumen {'─' * 50}")
+    """Print final summary with colors"""
+    print(f"\n{Colors.PURPLE}{'─' * 50}{Colors.END} {Colors.BOLD}{Colors.YELLOW}Resumen{Colors.END} {Colors.PURPLE}{'─' * 50}{Colors.END}")
     
     # Calculate one measure (4/4 = 4 quarter notes)
     measure_ms = quarter_note_ms * 4
     measure_str = format_number(measure_ms)
     quarter_str = format_number(quarter_note_ms)
     
-    print(f"1 compás {signature} = {measure_str} ms  •  1 negra = {quarter_str} ms  •  1 Hz = 1000 ms")
+    print(f"{Colors.BRIGHT_GREEN}1 compás {signature} = {measure_str} ms{Colors.END}  {Colors.CYAN}•{Colors.END}  {Colors.BRIGHT_GREEN}1 negra = {quarter_str} ms{Colors.END}  {Colors.CYAN}•{Colors.END}  {Colors.BRIGHT_GREEN}1 Hz = 1000 ms{Colors.END}")
 
 def main():
     """Main CLI function"""
