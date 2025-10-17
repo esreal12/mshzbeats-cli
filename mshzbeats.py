@@ -25,11 +25,11 @@ def calculate_musical_values(bpm, sample_rate=48000):
     
     # Musical note divisions
     note_divisions = {
-        "redonda": 4,      # whole note
-        "blanca": 2,       # half note
-        "negra": 1,        # quarter note
-        "corchea": 0.5,    # eighth note
-        "semicorchea": 0.25,  # sixteenth note
+        "1/1": 4,          # whole note
+        "1/2": 2,          # half note
+        "1/4": 1,          # quarter note
+        "1/8": 0.5,        # eighth note
+        "1/16": 0.25,      # sixteenth note
         "1/32": 0.125,     # thirty-second note
         "1/64": 0.0625     # sixty-fourth note
     }
@@ -140,15 +140,15 @@ def print_delay_presets(base_values, sample_rate):
     
     presets = {
         'Delay slap (1/32)': base_values['1/32'],
-        'Delay corto (1/16)': base_values['semicorchea'],
-        'Delay clásico (1/8)': base_values['corchea'],
+        'Delay corto (1/16)': base_values['1/16'],
+        'Delay clásico (1/8)': base_values['1/8'],
         'Ping-pong (3/16)': {
-            'ms': base_values['corchea']['ms'] * 1.5,
-            'hz': base_values['corchea']['hz'] / 1.5,
-            'samples': int(base_values['corchea']['samples'] * 1.5)
+            'ms': base_values['1/8']['ms'] * 1.5,
+            'hz': base_values['1/8']['hz'] / 1.5,
+            'samples': int(base_values['1/8']['samples'] * 1.5)
         },
-        'Eco (1/4)': base_values['negra'],
-        'Dub largo (1/2)': base_values['blanca']
+        'Eco (1/4)': base_values['1/4'],
+        'Dub largo (1/2)': base_values['1/2']
     }
     
     for preset_name, data in presets.items():
@@ -177,8 +177,8 @@ def print_compression_guide(base_values, sample_rate):
     compression = {
         'Ataque rápido (~1/64)': base_values['1/64'],
         'Ataque medio (~1/32)': base_values['1/32'],
-        'Release corto (~1/8)': base_values['corchea'],
-        'Release musical (~1/4)': base_values['negra']
+        'Release corto (~1/8)': base_values['1/8'],
+        'Release musical (~1/4)': base_values['1/4']
     }
     
     for param_name, data in compression.items():
@@ -194,14 +194,14 @@ def print_esreal_blocks(base_values, sample_rate):
     print("─" * 60)
     
     squelch = {
-        'LFO Rate 1 (1/8)': base_values['corchea'],
+        'LFO Rate 1 (1/8)': base_values['1/8'],
         'LFO Rate 2 (3/16)': {
-            'ms': base_values['corchea']['ms'] * 1.5,
-            'hz': base_values['corchea']['hz'] / 1.5,
-            'samples': int(base_values['corchea']['samples'] * 1.5)
+            'ms': base_values['1/8']['ms'] * 1.5,
+            'hz': base_values['1/8']['hz'] / 1.5,
+            'samples': int(base_values['1/8']['samples'] * 1.5)
         },
         'Grain Mod (1/32)': base_values['1/32'],
-        'FM Sweep (1/4)': base_values['negra']
+        'FM Sweep (1/4)': base_values['1/4']
     }
     
     for param_name, data in squelch.items():
@@ -216,22 +216,22 @@ def print_esreal_blocks(base_values, sample_rate):
     
     # Calculate 1/8T (eighth note triplet)
     eighth_triplet = {
-        'ms': base_values['corchea']['ms'] * (2/3),
-        'hz': base_values['corchea']['hz'] / (2/3),
-        'samples': int(base_values['corchea']['samples'] * (2/3))
+        'ms': base_values['1/8']['ms'] * (2/3),
+        'hz': base_values['1/8']['hz'] / (2/3),
+        'samples': int(base_values['1/8']['samples'] * (2/3))
     }
     
     # Calculate 2B (2 bars = 8 quarter notes)
     two_bars = {
-        'ms': base_values['negra']['ms'] * 8,
-        'hz': base_values['negra']['hz'] / 8,
-        'samples': base_values['negra']['samples'] * 8
+        'ms': base_values['1/4']['ms'] * 8,
+        'hz': base_values['1/4']['hz'] / 8,
+        'samples': base_values['1/4']['samples'] * 8
     }
     
     atmos = {
-        'Grain Cloud Speed (1/16)': base_values['semicorchea'],
+        'Grain Cloud Speed (1/16)': base_values['1/16'],
         'Random LFO (1/8T)': eighth_triplet,
-        'Filter Drift (1/2)': base_values['blanca'],
+        'Filter Drift (1/2)': base_values['1/2'],
         'Pan Motion (2B)': two_bars
     }
     
