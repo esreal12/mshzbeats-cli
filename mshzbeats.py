@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
-mshzbeats CLI (Esreal Edition)
+mshzbeats CLI (Esreal Edition) - Versión Extendida Ableton/Digital
 Calculadora de tempos y frecuencias para productores de psytech, deep techno y Zenon style.
+Incluye todas las divisiones rítmicas estándar (1/128 hasta 8 barras) compatibles con DAWs modernos.
 Creado por Israel Umaña Sedó / Esreal Music
 """
 
@@ -23,15 +24,20 @@ def calculate_musical_values(bpm, sample_rate=48000):
     # Base quarter note in milliseconds
     quarter_note_ms = 60000 / bpm
     
-    # Musical note divisions
+    # Musical note divisions - Extended Ableton/Digital Version
     note_divisions = {
+        "8B": 32,          # 8 bars (4/4)
+        "4B": 16,          # 4 bars (4/4)
+        "2B": 8,           # 2 bars (4/4)
+        "2/1": 8,          # double whole note (breve)
         "1/1": 4,          # whole note
         "1/2": 2,          # half note
         "1/4": 1,          # quarter note
         "1/8": 0.5,        # eighth note
         "1/16": 0.25,      # sixteenth note
         "1/32": 0.125,     # thirty-second note
-        "1/64": 0.0625     # sixty-fourth note
+        "1/64": 0.0625,    # sixty-fourth note
+        "1/128": 0.03125   # hundred-twenty-eighth note
     }
     
     # Calculate values for each note division
@@ -50,9 +56,12 @@ def calculate_musical_values(bpm, sample_rate=48000):
     return values, quarter_note_ms
 
 def calculate_dotted_values(base_values):
-    """Calculate dotted note values (×1.5)"""
+    """Calculate dotted note values (×1.5) - excludes bar-based divisions"""
     dotted = {}
     for note_name, values in base_values.items():
+        # Skip bar-based divisions (2B, 4B, 8B) for dotted notes
+        if note_name in ['2B', '4B', '8B']:
+            continue
         dotted[note_name] = {
             'ms': values['ms'] * 1.5,
             'hz': values['hz'] / 1.5,
@@ -61,9 +70,12 @@ def calculate_dotted_values(base_values):
     return dotted
 
 def calculate_triplet_values(base_values):
-    """Calculate triplet note values (×2/3)"""
+    """Calculate triplet note values (×2/3) - excludes bar-based divisions"""
     triplets = {}
     for note_name, values in base_values.items():
+        # Skip bar-based divisions (2B, 4B, 8B) for triplets
+        if note_name in ['2B', '4B', '8B']:
+            continue
         triplets[note_name] = {
             'ms': values['ms'] * (2/3),
             'hz': values['hz'] / (2/3),
@@ -104,6 +116,11 @@ def print_header(bpm, sample_rate, signature, swing):
 def print_section(title, values, sample_rate):
     """Print a section with musical values"""
     print(f"\n[{title}]")
+    
+    # Add special subtitle for straight figures
+    if title == "Figuras rectas":
+        print("──────────────── Divisiones estándar (analógicas / DAW) ────────────────")
+    
     print(f"{'Figura':<15} {'ms':<10} {'Hz(rate)':<10} {'muestras':<10}")
     print("─" * 50)
     

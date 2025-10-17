@@ -1,11 +1,15 @@
-# mshzbeats CLI (Esreal Edition)
+# mshzbeats CLI (Esreal Edition) - Versión Extendida Ableton/Digital
 
 [![Python 3](https://img.shields.io/badge/python-3.6+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Esreal Music](https://img.shields.io/badge/Esreal-Music-purple.svg)](https://github.com/esreal)
+[![Ableton Compatible](https://img.shields.io/badge/Ableton-Compatible-green.svg)](https://www.ableton.com/)
 
 Calculadora de tempos y frecuencias creada por **Esreal Music**  
 para productores de *psytech, deep techno y Zenon style*.
+
+**Versión Extendida** con todas las divisiones rítmicas estándar (1/128 hasta 8 barras),  
+compatible con DAWs modernos, sintetizadores digitales y efectos sincronizados por tempo.
 
 ---
 
@@ -33,7 +37,7 @@ mshzbeats 140 --signature 3/4 --swing 60
 
 ### 🧩 Secciones de salida
 
-- **Figuras rectas**: 1/1, 1/2, 1/4, 1/8, 1/16, 1/32, 1/64
+- **Figuras rectas**: 8B, 4B, 2B, 2/1, 1/1, 1/2, 1/4, 1/8, 1/16, 1/32, 1/64, 1/128
 - **Con puntillo**: todas las figuras con factor ×1.5
 - **En tresillo**: todas las figuras con factor ×(2/3)
 - **Swing en corcheas**: comparación entre recto (50%) y swing personalizado
@@ -60,8 +64,13 @@ sudo mv mshzbeats.py /usr/local/bin/mshzbeats
 ─────────────────── mshzbeats • BPM=130 • SR=48000 • Compás 4/4 ────────────────────
 
 [Figuras rectas]
+──────────────── Divisiones estándar (analógicas / DAW) ────────────────
 Figura        ms       Hz(rate)   muestras
 -------------------------------------------
+8B            14769.23 0.068      708923
+4B            7384.62  0.135      354462
+2B            3692.31  0.271      177231
+2/1           3692.31  0.271      177231
 1/1           1846.15  0.542      88523
 1/2           923.08   1.083      44261
 1/4           461.54   2.168      22154
@@ -69,6 +78,7 @@ Figura        ms       Hz(rate)   muestras
 1/16          115.38   8.667      5538
 1/32          57.692   17.333     2769
 1/64          28.846   34.667     1384
+1/128         14.423   69.333     692
 
 [Bloque Esreal Squelch]
 Parámetro          ms       Hz(rate)   muestras
@@ -108,7 +118,7 @@ mshzbeats 140 --signature 3/4 --swing 60
 
 ### 🧩 Output sections
 
-- **Straight figures**: 1/1, 1/2, 1/4, 1/8, 1/16, 1/32, 1/64 notes
+- **Straight figures**: 8B, 4B, 2B, 2/1, 1/1, 1/2, 1/4, 1/8, 1/16, 1/32, 1/64, 1/128 notes
 - **Dotted**: all figures with ×1.5 factor
 - **Triplets**: all figures with ×(2/3) factor
 - **Swing on eighths**: comparison between straight (50%) and custom swing
@@ -135,8 +145,13 @@ sudo mv mshzbeats.py /usr/local/bin/mshzbeats
 ─────────────────── mshzbeats • BPM=130 • SR=48000 • Compás 4/4 ────────────────────
 
 [Figuras rectas]
+──────────────── Divisiones estándar (analógicas / DAW) ────────────────
 Figura        ms       Hz(rate)   muestras
 -------------------------------------------
+8B            14769.23 0.068      708923
+4B            7384.62  0.135      354462
+2B            3692.31  0.271      177231
+2/1           3692.31  0.271      177231
 1/1           1846.15  0.542      88523
 1/2           923.08   1.083      44261
 1/4           461.54   2.168      22154
@@ -144,6 +159,7 @@ Figura        ms       Hz(rate)   muestras
 1/16          115.38   8.667      5538
 1/32          57.692   17.333     2769
 1/64          28.846   34.667     1384
+1/128         14.423   69.333     692
 
 [Bloque Esreal Squelch]
 Parámetro          ms       Hz(rate)   muestras
@@ -159,11 +175,26 @@ FM Sweep (1/4)     461.54   2.168      22154
 
 ---
 
+## 🧩 Versión Extendida Ableton/Digital
+
+Esta versión incluye todas las divisiones rítmicas estándar (1/128 hasta 8 barras),  
+compatible con DAWs modernos, sintetizadores digitales, y efectos sincronizados por tempo.
+
+| Categoría      | Ejemplos incluidos                    |
+|----------------|---------------------------------------|
+| **Muy lentas** | 2B, 4B, 8B                           |
+| **Lentas**     | 2/1, 1/1                             |
+| **Medias**     | 1/2, 1/4                             |
+| **Rápidas**    | 1/8, 1/16                            |
+| **Muy rápidas**| 1/32, 1/64, 1/128                     |
+| **Variaciones**| Puntillo (·), Tresillo (3)            |
+
 ## 🎛️ Features
 
 - ✅ **Zero dependencies** - Pure Python 3 standard library
 - ✅ **Cross-platform** - macOS, Linux, Windows (PowerShell compatible)
 - ✅ **Musical accuracy** - Precise BPM-to-ms calculations
+- ✅ **Extended divisions** - From 1/128 to 8 bars (Ableton/Digital compatible)
 - ✅ **Esreal presets** - Custom modulation timings from Zenon Template
 - ✅ **Clean output** - ASCII tables, no colors, terminal-friendly
 - ✅ **Flexible parameters** - Customizable sample rate, swing, time signature
